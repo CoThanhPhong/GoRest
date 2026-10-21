@@ -1,0 +1,30 @@
+name: GoRest API Testing Pipeline
+
+on:
+  push:
+    branches: [ "main", "master" ]
+
+jobs:
+  api-testing:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 1. Checkout repository
+        uses: actions/checkout@v4
+
+      - name: 2. Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: 3. Install Newman
+        run: npm install -g newman
+
+      - name: 4. Run Newman API Tests with Data File & Secret Token
+        env:
+          GOREST_TOKEN: ${{ secrets.GOREST_TOKEN }}
+        run: |
+          newman run GoRest.postman_collection.json \
+            -e GoRest.postman_environment.json \
+            -d users.csv \
+            --env-var "auth_secret_0xrg=$GOREST_TOKEN"
