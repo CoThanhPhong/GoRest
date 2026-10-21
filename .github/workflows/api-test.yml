@@ -24,7 +24,7 @@ jobs:
         env:
           GOREST_TOKEN: ${{ secrets.GOREST_TOKEN }}
         run: |
-          newman run GoRest.postman_collection.json \
-            -e GoRest.postman_environment.json \
+          newman run Collection.json \
+            -e Environment.json \
             -d users.csv \
             --env-var "auth_secret_0xrg=$GOREST_TOKEN"
