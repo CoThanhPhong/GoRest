@@ -1,0 +1,15 @@
+{
+	"id": "4bfbe681-a540-4dcd-ad9a-c2570f96d42c",
+	"name": "197CT31463_CoThanhPhong_GoRest_Env",
+	"values": [
+		{
+			"key": "userId",
+			"value": "",
+			"enabled": true
+		}
+	],
+	"color": null,
+	"_postman_variable_scope": "environment",
+	"_postman_exported_at": "2026-10-21T07:58:22.622Z",
+	"_postman_exported_using": "Postman/12.31.3"
+}
