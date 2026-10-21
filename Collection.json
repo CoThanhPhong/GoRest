@@ -8,62 +8,22 @@
   },
   "item": [
     {
-      "name": "Negative_Cases",
+      "name": "Positve_Cases",
       "item": [
         {
-          "name": "Get UserById after delete",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "status = pm.response.code;\npm.test(\"Người dùng không tồn tại\", () => {\n    pm.expect(status).to.eql(404);\n});"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_secret_0xrg}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "GET",
-            "header": [],
-            "url": {
-              "raw": "https://gorest.co.in/public/v2/users/{{userId}}",
-              "protocol": "https",
-              "host": [
-                "gorest",
-                "co",
-                "in"
-              ],
-              "path": [
-                "public",
-                "v2",
-                "users",
-                "{{userId}}"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
-          "name": "Create User no token",
+          "name": "Create User",
           "event": [
             {
               "listen": "test",
               "script": {
                 "exec": [
-                  "pm.test(\"Token chưa chính xác để thực hiện tạo mới người dùng!\", function () {",
-                  "    pm.expect(pm.response.code).to.eql(401);",
-                  "})"
+                  "var status = pm.response.code;",
+                  "pm.test(\"Tạo người dùng thành công!\", function () {",
+                  "    pm.expect(status).to.eql(201);",
+                  "    var userId = pm.response.headers.get(\"location\").split(\"/\")[6];",
+                  "    pm.environment.set(\"userId\", userId);",
+                  "})",
+                  ""
                 ],
                 "type": "text/javascript",
                 "packages": {},
@@ -77,7 +37,7 @@
               "bearer": [
                 {
                   "key": "token",
-                  "value": "",
+                  "value": "{{auth_secret_0xrg}}",
                   "type": "string"
                 }
               ]
@@ -86,7 +46,7 @@
             "header": [],
             "body": {
               "mode": "raw",
-              "raw": "{\r\n    \"name\": {{name}},\r\n    \"gender\": {{gender}},\r\n    \"email\" : {{email}},\r\n    \"status\": {{status}}\r\n}",
+              "raw": "{\r\n    \"name\": \"{{name}}\",\r\n    \"gender\": \"{{gender}}\",\r\n    \"email\" : \"{{email}}\",\r\n    \"status\": \"{{status}}\"\r\n}",
               "options": {
                 "raw": {
                   "language": "json"
@@ -110,73 +70,6 @@
           },
           "response": []
         },
-        {
-          "name": "Create User Email Existed",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "type": "text/javascript",
-                "exec": [
-                  "pm.test(\"Email đã tồn tại!\", function () {\n    pm.expect(status).to.eql(422);\n})"
-                ]
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_secret_0xrg}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": \"Chau\",\r\n    \"gender\": \"female\",\r\n    \"email\" : \"Chau18@gmail.com\",\r\n    \"status\": \"inactive\"\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "https://gorest.co.in/public/v2/users",
-              "protocol": "https",
-              "host": [
-                "gorest",
-                "co",
-                "in"
-              ],
-              "path": [
-                "public",
-                "v2",
-                "users"
-              ]
-            }
-          },
-          "response": []
-        }
-      ],
-      "auth": {
-        "type": "bearer",
-        "bearer": [
-          {
-            "key": "token",
-            "value": "https://github.com/CoThanhPhong/GoRest.git",
-            "type": "string"
-          }
-        ]
-      }
-    },
-    {
-      "name": "Positve_Cases",
-      "item": [
         {
           "name": "Get UserById",
           "event": [
@@ -265,66 +158,6 @@
           "response": []
         },
         {
-          "name": "Create User",
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "var status = pm.response.code;",
-                  "pm.test(pm.response.json(), function () {",
-                  "    pm.expect(status).to.eql(201);",
-                  "    var userId = pm.response.headers.get(\"location\").split(\"/\")[6];",
-                  "    pm.environment.set(\"userId\", userId);",
-                  "})",
-                  ""
-                ],
-                "type": "text/javascript",
-                "packages": {},
-                "requests": {}
-              }
-            }
-          ],
-          "request": {
-            "auth": {
-              "type": "bearer",
-              "bearer": [
-                {
-                  "key": "token",
-                  "value": "{{auth_secret_0xrg}}",
-                  "type": "string"
-                }
-              ]
-            },
-            "method": "POST",
-            "header": [],
-            "body": {
-              "mode": "raw",
-              "raw": "{\r\n    \"name\": {{name}},\r\n    \"gender\": {{gender}},\r\n    \"email\" : {{email}},\r\n    \"status\": {{status}}\r\n}",
-              "options": {
-                "raw": {
-                  "language": "json"
-                }
-              }
-            },
-            "url": {
-              "raw": "https://gorest.co.in/public/v2/users",
-              "protocol": "https",
-              "host": [
-                "gorest",
-                "co",
-                "in"
-              ],
-              "path": [
-                "public",
-                "v2",
-                "users"
-              ]
-            }
-          },
-          "response": []
-        },
-        {
           "name": "Update User",
           "event": [
             {
@@ -383,10 +216,16 @@
             {
               "listen": "test",
               "script": {
-                "type": "text/javascript",
                 "exec": [
-                  "var status = pm.response.code;\npm.test(\"Xóa thành công!\", function () {\n    pm.expect(status).to.eql(204);\n})"
-                ]
+                  "var status = pm.response.code;",
+                  "if (status === 204) {",
+                  "pm.test(\"Xóa thành công!\", function () {",
+                  "    pm.expect(status).to.eql(204);",
+                  "})}"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
               }
             }
           ],
@@ -416,6 +255,177 @@
                 "v2",
                 "users",
                 "{{userId}}"
+              ]
+            }
+          },
+          "response": []
+        }
+      ],
+      "auth": {
+        "type": "bearer",
+        "bearer": [
+          {
+            "key": "token",
+            "value": "https://github.com/CoThanhPhong/GoRest.git",
+            "type": "string"
+          }
+        ]
+      }
+    },
+    {
+      "name": "Negative_Cases",
+      "item": [
+        {
+          "name": "Get UserById after delete",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "type": "text/javascript",
+                "exec": [
+                  "status = pm.response.code;\npm.test(\"Người dùng không tồn tại\", () => {\n    pm.expect(status).to.eql(404);\n});"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_secret_0xrg}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "https://gorest.co.in/public/v2/users/{{userId}}",
+              "protocol": "https",
+              "host": [
+                "gorest",
+                "co",
+                "in"
+              ],
+              "path": [
+                "public",
+                "v2",
+                "users",
+                "{{userId}}"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User Email Existed",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Email đã tồn tại!\", function () {",
+                  "    pm.expect(pm.response.code).to.eql(422);",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "{{auth_secret_0xrg}}",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Chau\",\r\n    \"gender\": \"female\",\r\n    \"email\" : \"Chau18@gmail.com\",\r\n    \"status\": \"inactive\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://gorest.co.in/public/v2/users",
+              "protocol": "https",
+              "host": [
+                "gorest",
+                "co",
+                "in"
+              ],
+              "path": [
+                "public",
+                "v2",
+                "users"
+              ]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "Create User no token",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Token chưa chính xác để thực hiện tạo mới người dùng!\", function () {",
+                  "    pm.expect(pm.response.code).to.eql(400);",
+                  "})"
+                ],
+                "type": "text/javascript",
+                "packages": {},
+                "requests": {}
+              }
+            }
+          ],
+          "request": {
+            "auth": {
+              "type": "bearer",
+              "bearer": [
+                {
+                  "key": "token",
+                  "value": "",
+                  "type": "string"
+                }
+              ]
+            },
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": {{name}},\r\n    \"gender\": {{gender}},\r\n    \"email\" : {{email}},\r\n    \"status\": {{status}}\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "https://gorest.co.in/public/v2/users",
+              "protocol": "https",
+              "host": [
+                "gorest",
+                "co",
+                "in"
+              ],
+              "path": [
+                "public",
+                "v2",
+                "users"
               ]
             }
           },
